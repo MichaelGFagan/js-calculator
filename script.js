@@ -1,6 +1,21 @@
 let numA = 0;
 let numB = 0;
 let operator = 'add';
+let displayNumber = '';
+
+display = document.querySelector('#display');
+
+const buttons = document.querySelectorAll('.number');
+buttons.forEach((button) => {
+    button.addEventListener('click', (e) => {
+        displayNumber = displayNumber + e.target.textContent;
+        updateDisplay(displayNumber);
+    });
+});
+
+function updateDisplay(displayNumber) {
+    display.value = displayNumber;
+}
 
 function operate(numA, numB, operator) {
     if (operator === 'add') {
