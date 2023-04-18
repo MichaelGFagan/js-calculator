@@ -1,5 +1,5 @@
-let numA = 0;
-let numB = 0;
+let runningTotal = 0;
+// let numB = 0;
 let operator = '';
 let displayNumber = '0';
 let isOperatorActive = false;
@@ -16,9 +16,6 @@ numberButtons.forEach((button) => {
                 isResetActive = false;
                 displayNumber = '';
             };
-            if (isOperatorActive) {
-                isOperatorActive = false;
-            };
             displayNumber = displayNumber + inputNumber;
             updateDisplay(displayNumber);
         }
@@ -28,21 +25,15 @@ numberButtons.forEach((button) => {
 const operatorButtons = document.querySelectorAll('.operator');
 operatorButtons.forEach((button) => {
     button.addEventListener('click', (e) => {
-        symbol = e.target.textContent
-        if (symbol === '+') {
-            operator = 'add';
+        symbol = e.target.textContent;
+        if (operator) {
+            numB = Number(displayNumber);
+            runningTotal = operate(runningTotal, numB, operator);
         }
-        else if (symbol === '-') {
-            operator = 'subtract';
-        }
-        else if (symbol === '*') {
-            operator = 'multiply';
-        }
-        else if (symbol === '/') {
-            operator = 'divide';
-        }
-        numA = Number(displayNumber);
-        isOperatorActive = true;
+        else {
+            runningTotal = Number(displayNumber);
+        };
+        setOperator(symbol);
         isResetActive = true;
     })
 });
@@ -51,25 +42,45 @@ const equalButton = document.querySelector('#equals');
 equalButton.addEventListener('click', (e) => {
     if (operator) {
         numB = Number(displayNumber);
-        displayNumber = operate(numA, numB, operator);
-        updateDisplay(displayNumber);
+        runningTotal = operate(runningTotal, numB, operator);
+        updateDisplay(runningTotal);
+        operator = '';
     };
 });
 
 const eraseButton = document.querySelector('#erase');
 eraseButton.addEventListener('click', (e) => {
-    numA = 0;
+    resetDisplay();
+});
+
+function setOperator(symbol) {
+    if (symbol === '+') {
+        operator = 'add';
+    }
+    else if (symbol === '-') {
+        operator = 'subtract';
+    }
+    else if (symbol === '*') {
+        operator = 'multiply';
+    }
+    else if (symbol === '/') {
+        operator = 'divide';
+    }
+};
+
+function resetDisplay() {
+    runningTotal = 0;
     numB = 0;
     operator = '';
     displayNumber = '0';
     isOperatorActive = false;
     isResetActive = true;
     updateDisplay(displayNumber);
-});
+};
 
 function updateDisplay(displayNumber) {
     display.value = displayNumber;
-}
+};
 
 function operate(numA, numB, operator) {
     if (operator === 'add') {
