@@ -43,7 +43,8 @@ equalButton.addEventListener('click', (e) => {
     if (operator) {
         numB = Number(displayNumber);
         runningTotal = operate(runningTotal, numB, operator);
-        updateDisplay(runningTotal);
+        displayNumber = runningTotal;
+        updateDisplay(displayNumber);
         operator = '';
     };
 });
