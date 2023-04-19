@@ -1,8 +1,7 @@
 let runningTotal = 0;
-// let numB = 0;
 let operator = '';
 let displayNumber = '0';
-let isOperatorActive = false;
+let numbersEntered = 0;
 let isResetActive = true;
 
 display = document.querySelector('#display');
@@ -42,7 +41,7 @@ operatorButtons.forEach((button) => {
 
 const equalButton = document.querySelector('#equals');
 equalButton.addEventListener('click', (e) => {
-    if (operator) {
+    if (operator && !isResetActive) {
         numB = Number(displayNumber);
         runningTotal = operate(runningTotal, numB, operator);
         displayNumber = runningTotal;
@@ -76,7 +75,6 @@ function resetDisplay() {
     numB = 0;
     operator = '';
     displayNumber = '0';
-    isOperatorActive = false;
     isResetActive = true;
     updateDisplay(displayNumber);
 };
