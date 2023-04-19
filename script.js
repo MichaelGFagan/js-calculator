@@ -29,6 +29,8 @@ operatorButtons.forEach((button) => {
         if (operator) {
             numB = Number(displayNumber);
             runningTotal = operate(runningTotal, numB, operator);
+            displayNumber = runningTotal;
+            updateDisplay(displayNumber);
         }
         else {
             runningTotal = Number(displayNumber);
