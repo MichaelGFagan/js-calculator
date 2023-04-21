@@ -11,14 +11,16 @@ numberButtons.forEach((button) => {
     button.addEventListener('click', (e) => {
         inputNumber = e.target.textContent;
         if (!(displayNumber === "0" && inputNumber === "0")) {
-            if (isResetActive) {
-                isResetActive = false;
-                displayNumber = '';
-            };
-            displayNumber = displayNumber + inputNumber;
-            updateDisplay(displayNumber);
+            buttonInput(inputNumber);
         }
     });
+});
+
+const decimalButton = document.querySelector('.decimal');
+decimalButton.addEventListener('click', (e) => {
+    if (!displayNumber.includes('.')) {
+        buttonInput('.');
+    }
 });
 
 const operatorButtons = document.querySelectorAll('.operator');
@@ -54,6 +56,15 @@ const eraseButton = document.querySelector('#erase');
 eraseButton.addEventListener('click', (e) => {
     resetDisplay();
 });
+
+function buttonInput(inputNumber) {
+    if (isResetActive) {
+        isResetActive = false;
+        displayNumber = '';
+    };
+    displayNumber = displayNumber + inputNumber;
+    updateDisplay(displayNumber);
+};
 
 function setOperator(symbol) {
     if (symbol === '+') {
