@@ -83,19 +83,33 @@ function updateDisplay(displayNumber) {
     display.value = displayNumber;
 };
 
+function countDecimal(num) {
+    const numString = String(num);
+    if (numString.includes('.')) {
+        return numString.split('.')[1].length
+    };
+    return 0;
+}
+
 function operate(numA, numB, operator) {
+    numADecimal = countDecimal(numA);
+    numBDecimal = countDecimal(numB);
+    correction = 10 **(Math.max(numADecimal, numBDecimal) + 1);
+    numA *= correction;
+    numB *= correction;
     if (operator === 'add') {
-        return add(numA, numB);
+        result = add(numA, numB);
     }
     else if (operator === 'subtract') {
-        return substract(numA, numB);
+        result = substract(numA, numB);
     }
     else if (operator === 'multiply') {
-        return multiply(numA, numB);
+        result = multiply(numA, numB);
     }
     else if (operator === 'divide') {
-        return divide(numA, numB);
+        result = divide(numA, numB);
     };
+    return result / correction;
 };
 
 function add(a, b) {
