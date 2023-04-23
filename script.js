@@ -49,12 +49,26 @@ equalButton.addEventListener('click', (e) => {
         displayNumber = runningTotal;
         updateDisplay(displayNumber);
         operator = '';
+        isResetActive = true;
     };
 });
 
-const eraseButton = document.querySelector('#erase');
-eraseButton.addEventListener('click', (e) => {
+const clearButton = document.querySelector('#clear');
+clearButton.addEventListener('click', (e) => {
     resetDisplay();
+});
+
+const backspaceButton = document.querySelector('#backspace');
+backspaceButton.addEventListener('click', (e) => {
+    if (!isResetActive) {
+        if (displayNumber.length === 1) {
+            updateDisplay('0');
+        }
+        else {
+            displayNumber = displayNumber.slice(0, -1)
+            updateDisplay(displayNumber);
+        }
+    };
 });
 
 function buttonInput(inputNumber) {
