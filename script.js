@@ -3,6 +3,7 @@ let operator = '';
 let displayNumber = '0';
 let numbersEntered = 0;
 let isResetActive = true;
+let isOperatorActive = false;
 
 display = document.querySelector('#display');
 
@@ -12,6 +13,7 @@ numberButtons.forEach((button) => {
         inputNumber = e.target.textContent;
         if (!(displayNumber === "0" && inputNumber === "0")) {
             buttonInput(inputNumber);
+            isOperatorActive = false;
         }
     });
 });
@@ -20,6 +22,7 @@ const decimalButton = document.querySelector('.decimal');
 decimalButton.addEventListener('click', (e) => {
     if (!displayNumber.includes('.')) {
         buttonInput('.');
+        isOperatorActive = false;
     }
 });
 
@@ -27,17 +30,20 @@ const operatorButtons = document.querySelectorAll('.operator');
 operatorButtons.forEach((button) => {
     button.addEventListener('click', (e) => {
         symbol = e.target.textContent;
-        if (operator) {
-            numB = Number(displayNumber);
-            runningTotal = operate(runningTotal, numB, operator);
-            displayNumber = runningTotal;
-            updateDisplay(displayNumber);
+        if (!isOperatorActive) {
+            if (operator) {
+                numB = Number(displayNumber);
+                runningTotal = operate(runningTotal, numB, operator);
+                displayNumber = runningTotal;
+                updateDisplay(displayNumber);
+            }
+            else {
+                runningTotal = Number(displayNumber);
+            };
         }
-        else {
-            runningTotal = Number(displayNumber);
-        };
         setOperator(symbol);
         isResetActive = true;
+        isOperatorActive = true;
     })
 });
 
@@ -56,6 +62,7 @@ equalButton.addEventListener('click', (e) => {
 const clearButton = document.querySelector('#clear');
 clearButton.addEventListener('click', (e) => {
     resetDisplay();
+    isOperatorActive = false;
 });
 
 const backspaceButton = document.querySelector('#backspace');
@@ -101,6 +108,7 @@ function resetDisplay() {
     operator = '';
     displayNumber = '0';
     isResetActive = true;
+    isOperatorActive = false;
     updateDisplay(displayNumber);
 };
 
@@ -111,7 +119,7 @@ function updateDisplay(displayNumber) {
 function countDecimal(num) {
     const numString = String(num);
     if (numString.includes('.')) {
-        return numString.split('.')[1].length
+        return numString.split('.')[1].length;
     };
     return 0;
 }
@@ -119,22 +127,32 @@ function countDecimal(num) {
 function operate(numA, numB, operator) {
     numADecimal = countDecimal(numA);
     numBDecimal = countDecimal(numB);
-    correction = 10 **(Math.max(numADecimal, numBDecimal) + 1);
-    numA *= correction;
-    numB *= correction;
     if (operator === 'add') {
+        correction = 10 ** (Math.max(numADecimal, numBDecimal) + 1);
+        numA *= correction;
+        numB *= correction;
         result = add(numA, numB);
+        return result / correction;
     }
     else if (operator === 'subtract') {
+        correction = 10 ** (Math.max(numADecimal, numBDecimal) + 1);
+        numA *= correction;
+        numB *= correction;
         result = substract(numA, numB);
+        return result / correction;
     }
     else if (operator === 'multiply') {
+        correction = 10 ** Math.max(numADecimal, numBDecimal);
+        numA *= correction;
+        numB *= correction;
+        console.log(numA, numB);
         result = multiply(numA, numB);
+        return result;
     }
     else if (operator === 'divide') {
         result = divide(numA, numB);
+        return result;
     };
-    return result / correction;
 };
 
 function add(a, b) {
